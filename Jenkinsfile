@@ -45,12 +45,15 @@ stages{
 //  }
 //  }
         stage('SAST-SONARQUBE') {
+		environment {
+                scannerHome = tool name: 'SonarQube Scanner'
+
+            }
           steps {
 	    
             withSonarQubeEnv('sonarcloud') {
-	       sh """wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.7.0.2747-linux.zip
-	        unzip sonar-scanner-cli-4.7.0.2747-linux.zip
-               ./sonar-scanner-cli-4.7.0.2747-linux/bin/sonar-scanner -Dsonar.organization=devsecops-sast -Dsonar.projectKey=sast-java-key -Dsonar.projectName=sast-java -Dsonar.projectVersion=1.0 -Dsonar.sources=src -Dsonar.java.binaries=target"""
+	       sh """
+	       ${scannerHome}/bin/sonar-scanner -Dsonar.organization=devsecops-sast -Dsonar.projectKey=sast-java-key -Dsonar.projectName=sast-java -Dsonar.projectVersion=1.0 -Dsonar.sources=src -Dsonar.java.binaries=target"""
             }
 
             timeout(time: 20, unit: 'SECONDS') {
