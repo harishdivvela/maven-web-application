@@ -46,8 +46,8 @@ stages{
 //  }
         stage('SAST-SONARQUBE') {
           steps {
+	    def scannerHome = tool 'SonarQube Scanner';	  
             withSonarQubeEnv('sonarcloud') {
-	       def scannerHome = tool 'SonarQube Scanner';    
                sh '''${scannerHome}/bin/sonar-scanner \ 
 	       	   -Dsonar.organization=devsecops-sast \
 	       	   -Dsonar.projectKey=sast-java-key \
