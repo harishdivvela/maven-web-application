@@ -45,7 +45,8 @@ stages{
 //  }
 //  }
         
-   stage('SAST-SONARQUBE') {
+  stage('SAST-SONARQUBE'){
+  steps{      
         def scannerHome = tool 'SonarQube'; 	
         withSonarQubeEnv('sonarcloud') {
           sh "${scannerHome}/bin/sonar-scanner \
@@ -55,7 +56,7 @@ stages{
 	  -Dsonar.projectVersion=1.0 \
           -Dsonar.sources=src -Dsonar.java.binaries=target"
           }
-
+      }
    }
  /* stage('UploadArtifactsIntoNexus'){
   steps{
