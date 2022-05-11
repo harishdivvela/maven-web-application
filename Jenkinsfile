@@ -47,15 +47,15 @@ stages{
         stage('SAST-SONARQUBE') {
           steps {
             script {
-	      scannerHome = tool 'SonarQube Scanner'
+	        scannerHome = tool 'SonarQube Scanner'
 	      }	  
 		withSonarQubeEnv('sonarcloud') {
 		sh "$tool{scannerHome}/bin/sonar-scanner --version \
-	        -Dsonar.organization=devsecops-sast \
-	        -Dsonar.projectKey=sast-java-key \
-		-Dsonar.projectName=sast-java \
-	        -Dsonar.projectVersion=1.0 \
-                -Dsonar.sources=src -Dsonar.java.binaries=target"
+	       -Dsonar.organization=devsecops-sast \
+	       -Dsonar.projectKey=sast-java-key \
+	       -Dsonar.projectName=sast-java \
+	       -Dsonar.projectVersion=1.0 \
+               -Dsonar.sources=src -Dsonar.java.binaries=target"
             }
 
             timeout(time: 20, unit: 'SECONDS') {
