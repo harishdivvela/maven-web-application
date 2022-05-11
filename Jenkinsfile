@@ -44,25 +44,21 @@ stages{
 //	  } 
 //  }
 //  }
-        stage('SAST-SONARQUBE') {
-          steps {
-            script {
-	        scannerHome = tool 'SonarQube Scanner'
-	      }	  
+        
+   stage('SAST-SONARQUBE') {
+    steps {
+        def scannerHome = tool 'SonarQube'; 	
 		withSonarQubeEnv('sonarcloud') {
-		sh "$tool{scannerHome}/bin/sonar-scanner --version \
+		   sh "${scannerHome}/bin/sonar-scanner \
 	       -Dsonar.organization=devsecops-sast \
 	       -Dsonar.projectKey=sast-java-key \
 	       -Dsonar.projectName=sast-java \
 	       -Dsonar.projectVersion=1.0 \
                -Dsonar.sources=src -Dsonar.java.binaries=target"
-            }
+          }
 
-            timeout(time: 20, unit: 'SECONDS') {
-               waitForQualityGate abortPipeline: true
             }
           }
-        }
  /* stage('UploadArtifactsIntoNexus'){
   steps{
   sh  "mvn clean deploy"
