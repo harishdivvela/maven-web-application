@@ -46,9 +46,10 @@ stages{
 //  }
         
   stage('SAST-SONARQUBE'){
-  steps{      
-        def scannerHome = tool 'SonarQube'; 	
-        withSonarQubeEnv('sonarcloud') {
+    steps{
+      script{	    
+    	 def scannerHome = tool 'SonarQube'; 	
+         withSonarQubeEnv('sonarcloud') {
           sh "${scannerHome}/bin/sonar-scanner \
 	  -Dsonar.organization=devsecops-sast \
 	  -Dsonar.projectKey=sast-java-key \
@@ -58,6 +59,7 @@ stages{
           }
       }
    }
+  }	  
  /* stage('UploadArtifactsIntoNexus'){
   steps{
   sh  "mvn clean deploy"
