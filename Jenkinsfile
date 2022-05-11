@@ -48,7 +48,8 @@ stages{
   stage('SAST-SONARQUBE'){
     steps{
       script{	    
-    	 def scannerHome = tool 'SonarQube'; 	
+    	 def scannerHome = tool 'SonarQubeNew';
+	 sh 'echo $scannerHome'     
          withSonarQubeEnv('sonarcloud') {
 	  //sh 'mvn clean package sonar:sonar'	 
           sh "${scannerHome}/bin/sonar-scanner \
