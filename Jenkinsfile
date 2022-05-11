@@ -46,7 +46,6 @@ stages{
 //  }
         
    stage('SAST-SONARQUBE') {
-    steps {
         def scannerHome = tool 'SonarQube'; 	
         withSonarQubeEnv('sonarcloud') {
           sh "${scannerHome}/bin/sonar-scanner \
