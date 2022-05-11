@@ -50,7 +50,7 @@ stages{
       script{	    
     	 def scannerHome = tool 'SonarQube'; 	
          withSonarQubeEnv('sonarcloud') {
-	  sh 'mvn clean package sonar:sonar'	 
+	  //sh 'mvn clean package sonar:sonar'	 
           sh "${scannerHome}/bin/sonar-scanner \
 	  -Dsonar.organization=devsecops-sast \
 	  -Dsonar.projectKey=sast-java-key \
