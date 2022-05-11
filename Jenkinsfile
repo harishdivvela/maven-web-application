@@ -56,8 +56,7 @@ stages{
           -Dsonar.sources=src -Dsonar.java.binaries=target"
           }
 
-            }
-          }
+   }
  /* stage('UploadArtifactsIntoNexus'){
   steps{
   sh  "mvn clean deploy"
