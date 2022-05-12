@@ -49,14 +49,7 @@ stages{
     steps{
       script{	    
     	 def scannerHome = tool 'SonarQubeNew';	 
-          sh "${scannerHome}/bin/sonar-scanner \
-	  -Dsonar.host.url=https://sonarcloud.io \
-	  -Dsonar.login=33739226d5a66a4a1aa027a098af8c7aea11a466 \	  
-	  -Dsonar.organization=devsecops-sast \
-	  -Dsonar.projectKey=sast-java-key \
-	  -Dsonar.projectName=sast-java \
-	  -Dsonar.projectVersion=1.0 \
-          -Dsonar.sources=src -Dsonar.java.binaries=target"
+          sh "${scannerHome}/bin/sonar-scanner -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=33739226d5a66a4a1aa027a098af8c7aea11a466 -Dsonar.organization=devsecops-sast -Dsonar.projectKey=sast-java-key -Dsonar.projectName=sast-java -Dsonar.projectVersion=1.0 -Dsonar.sources=src -Dsonar.java.binaries=target"
       }
    }
   }	  
