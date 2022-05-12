@@ -24,14 +24,14 @@ stages{
   sh  "mvn clean package"
   }
   }
- stage('SCA'){
-  steps{
-	  script{
-	dependencyCheck additionalArguments: '', odcInstallation: 'sca'
+// stage('SCA'){
+ // steps{
+//	  script{
+//	dependencyCheck additionalArguments: '', odcInstallation: 'sca'
 	
-  }
-  }
-  }
+  //}
+  //}
+  //}
 //  stage('SCA-RESULTS-CHECK'){
 //  steps{
 //	  script{
