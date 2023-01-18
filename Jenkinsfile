@@ -9,6 +9,15 @@ environment {
 
 
    stages{
+        organizations {
+        buildStrategies {
+        buildAllBranches {
+        strategies {
+        skipInitialBuildOnFirstBranchIndexing()
+           }
+        }
+      }
+	}
 
        stage('CheckOutCode'){
            steps{
