@@ -1,57 +1,69 @@
 pipeline{
 
 agent any
-triggers{
-pollSCM('* * * * *')
+
+environment {
+ //   DOCKERHUB_CREDENTIALS= credentials('dockerhub-hari')
+      ivutest = sh(script: "docker ps -q", returnStdout: true)
 }
 
-//options{
-//timestamps()
-//buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '5', daysToKeepStr: '', numToKeepStr: '5'))
-//}
 
-stages{
+   stages{
 
-  stage('CheckOutCode'){
-    steps{
-    git branch: 'development', credentialsId: '957b543e-6f77-4cef-9aec-82e9b0230975', url: 'https://github.com/devopstrainingblr/maven-web-application-1.git'
+       stage('CheckOutCode'){
+           steps{
+              git branch: 'master', credentialsId: 'docker-test', url: 'https://github.com/harishdivvela/maven-web-application.git'
 	
-	}
-  }
+	         }
+	         
+        }
+    
+        stage('Build'){
+            steps{
+              sh "mvn clean package"
+            }  
+        }
+    
   
-  stage('Build'){
-  steps{
-  sh  "mvn clean package"
-  }
-  }
-// stage('SCA'){
- // steps{
-//	  script{
-//	dependencyCheck additionalArguments: '', odcInstallation: 'sca'
-	
-  //}
-  //}
-  //}
-//  stage('SCA-RESULTS-CHECK'){
-//  steps{
-//	  script{
-//	dependencyCheckPublisher failedTotalCritical: 1, failedTotalHigh: 1, failedTotalLow: 1, failedTotalMedium: 1, pattern: '**/dependency-check-report.xml'
-//  	if (currentBuild.rawBuild.getLog(50).contains('[DependencyCheck] Findings exceed configured thresholds')) {
-//        error("Build failed due to vulnerabilities found during dependencyCheck")    
-//}else{
-//        sh 'echo "No vulnerabilities found during dependencyCheck"'
-//} 
-//	  } 
-//  }
-//  }
+        stage('Build Docker image'){
+            steps{
+              sh 'docker build -t hari321/docker:$BUILD_NUMBER .'
+            }
+        }
         
-  stage('SAST-SONARQUBE'){
-    steps{
-      script{	    
-    	 def scannerHome = tool 'SonarQubeNew';	 
-          sh "${scannerHome}/bin/sonar-scanner -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=33739226d5a66a4a1aa027a098af8c7aea11a466 -Dsonar.organization=harishdevsecops -Dsonar.projectKey=sast-java-key -Dsonar.projectName=sast-java -Dsonar.projectVersion=1.0 -Dsonar.sources=src -Dsonar.java.binaries=target"
-      }
+        stage('login docker hub'){
+            steps{
+                
+                script{
+                   withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {
+                   sh 'docker login -u hari321 -p ${dockerhubpwd}'
+                   }
+                   sh 'docker push hari321/docker:$BUILD_NUMBER'
+               
+               }
+            }
+            
+        }
+        
+        stage ('docker deployment')
+	    {
+           steps
+		   {
+		
+		       withCredentials([usernamePassword(credentialsId: 'docker-ivu', passwordVariable: 'pwd', usernameVariable: 'user')]) 
+		       {
+		           //sh "sshpass -p $pwd ssh $user@10.127.129.62 sudo docker stop my-app-8 && docker rm my-app-8" 
+		          //sh "sshpass -p $pwd ssh $user@10.127.129.62 \"sudo docker ps --format \"{{.Names}}\" | xargs sudo docker kill\""
+		          sh "sshpass -p $pwd ssh $user@10.127.129.62 \"sudo docker ps -a --format \"{{.Names}}\" | xargs sudo docker kill | xargs sudo docker rm && docker run -p 80:80 -d --name my-app-8 dtr.nagarro.com:443/ivu-docker:1.1.13\""
+		           //sh 'sshpass -p $PASS ssh -o StrictHostKeyChecking=no $USER@10.127.129.197 mkdir -p $JENKINS_HOME/workspace/$JOB_NAME'
+		       }
+		   }
+		   
+	    }
+	    
    }
-  }	  
-}
-}	
+   
+}   
+		           
+        
+   
