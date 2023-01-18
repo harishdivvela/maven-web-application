@@ -1,6 +1,6 @@
 pipeline{
 
-agent any
+agent {label 'Linux_Slave'}
 
 environment {
  //   DOCKERHUB_CREDENTIALS= credentials('dockerhub-hari')
