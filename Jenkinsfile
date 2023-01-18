@@ -54,7 +54,7 @@ environment {
 		       {
 		           //sh "sshpass -p $pwd ssh $user@10.127.129.62 sudo docker stop my-app-8 && docker rm my-app-8" 
 		          //sh "sshpass -p $pwd ssh $user@10.127.129.62 \"sudo docker ps --format \"{{.Names}}\" | xargs sudo docker kill\""
-		          sh "sshpass -p $pwd ssh $user@10.127.129.62 \"sudo docker ps -a --format \"{{.Names}}\" | xargs sudo docker kill | xargs sudo docker rm && docker run -p 80:80 -d --name my-app-8 dtr.nagarro.com:443/ivu-docker:1.1.13\""
+		          //sh "sshpass -p $pwd ssh $user@10.127.129.62 \"sudo docker ps -a --format \"{{.Names}}\" | xargs sudo docker kill | xargs sudo docker rm && docker run -p 80:80 -d --name my-app-8 dtr.nagarro.com:443/ivu-docker:1.1.13\""
 		           //sh 'sshpass -p $PASS ssh -o StrictHostKeyChecking=no $USER@10.127.129.197 mkdir -p $JENKINS_HOME/workspace/$JOB_NAME'
 		       }
 		   }
